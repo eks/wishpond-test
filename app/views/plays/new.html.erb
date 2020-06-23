@@ -1,0 +1,63 @@
+<h1 id="countdown"></h1>
+
+<p>
+  <img src="" style="height: 150px; width: 150px" id="imgClickAndChange" />
+</p>
+
+<%= form_with model: @play do |f| %>
+  <%= f.hidden_field :game_id, value: @play.game_id %>
+  <%= f.hidden_field :time %>
+  <%= f.hidden_field :image_url %>
+  <%= f.submit onclick: 'appendToTable()' %>
+<% end %>
+
+<table id="plays">
+  <th>Time</th><th>Image</th>
+  <% @plays.each do |play| %>
+    <tr>
+      <td><%= play.time %></td>
+      <td><%= image_tag play.image_url, size: "150x150" %></td>
+    </tr>
+  <% end %>
+</table>
+
+<script language="javascript">
+  let timer;
+  function startTimer(duration, display) {
+    timer = duration;
+    let seconds;
+    let images = [<%= raw @array.to_json %>];
+
+    setInterval(function () {
+      seconds = parseInt(timer);
+      display.textContent = seconds;
+      let currentImage = images[0][seconds - 1];
+      document.getElementById("imgClickAndChange").src = currentImage;
+      document.getElementById("play_time").value = seconds;
+      document.getElementById("play_image_url").value = currentImage;
+
+      if (--timer < 1) {
+        timer = duration;
+      }
+    }, 1000);
+  };
+
+  function appendToTable() {
+    let table = document.getElementById("plays").getElementsByTagName("tbody")[0];
+    let newRow = table.insertRow(-1);
+    let timeCell = newRow.insertCell(0);
+    let imageCell = newRow.insertCell(1);
+    timeCell.innerHTML = document.getElementById("play_time").value;
+
+    let img = document.createElement('img');
+    img.src = document.getElementById("play_image_url").value;
+    img.style = "width: 150px; height: 150px"
+    imageCell.appendChild(img);
+  }
+
+  window.onload = function () {
+    seconds = 10,
+    display = document.querySelector('#countdown');
+    startTimer(seconds, display);
+  };
+</script>

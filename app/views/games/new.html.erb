@@ -1,0 +1,6 @@
+<%= form_with model: @game, local: true do |f| %>
+  <%= f.label :images %>
+  <%= f.file_field :images, multiple: true %>
+
+  <%= f.submit 'Upload Game Images' %>
+<% end %>

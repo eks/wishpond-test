@@ -25,7 +25,7 @@ COPY Gemfile /wishpond-test/Gemfile
 COPY Gemfile.lock /wishpond-test/Gemfile.lock
 
 RUN bundle install --jobs 20 --retry 5
-RUN gem install bundle-audit
+RUN gem install bundle-audit mini_magick
 
 ADD . /wishpond-test
 COPY . /wishpond-test
